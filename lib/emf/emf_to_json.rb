@@ -1,3 +1,6 @@
+# This code permit to transform EObjects in Hash objects
+# containing lists and single values
+
 require 'emf/ast_serialization'
 
 def qname(e_object)

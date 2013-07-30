@@ -4,6 +4,8 @@ module JSON
 	end
 end
 
+# This module permits to manipulate EObjects serialized
+# as Hash
 module EMF
 
 	def self.rel_conts(root)
