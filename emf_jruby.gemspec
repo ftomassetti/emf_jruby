@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
 	"lib/emf/emf_to_json.rb",
 	"lib/emf/emf_nav.rb",
 	"lib/emf/ast_serialization.rb",
+  "lib/emf/eobject_util.rb",
   "lib/emf/model.rb",
 	"lib/jars/org.antlr.runtime_3.0.0.v200803061811.jar",
 	"lib/jars/org.eclipse.emf.common_2.8.0.v20130125-0546.jar",
