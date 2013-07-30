@@ -1,4 +1,4 @@
-require 'ast_serialization'
+require 'emf/ast_serialization'
 
 def qname(e_object)
 	e_class = e_object.eClass
