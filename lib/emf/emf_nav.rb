@@ -1,3 +1,5 @@
+require 'json'
+
 module JSON
 	def self.load_file(path,max_nesting=100)
 		parse(File.read(path),{max_nesting: max_nesting})
@@ -27,8 +29,9 @@ module EMF
 	end
 
 	def self.traverse(root,depth=0,&op)
+		return traverse(root['root'],depth,&op) if root and (root.key? 'root')
 		op.call(root,depth)
-		return unless root
+		return unless root		
 		rel_conts(root).each do |r|
 			if root[r].is_a? Array
 				root[r].each do |c|
