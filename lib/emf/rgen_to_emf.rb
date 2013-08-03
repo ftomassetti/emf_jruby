@@ -17,7 +17,7 @@ module EMF
 	end
 
 	def self.rgen_to_eclass(rgen_class)
-		raise "MMBase expected, #{rgen_class.ancestors}" unless rgen_class.is_a? RGen::MetamodelBuilder::MMBase
+		rgen_class.ecore.eGet...
 	end
 
 end
