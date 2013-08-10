@@ -1,6 +1,6 @@
 require 'emf/emf_nav'
 
-module CodeModels
+module GenericModels
 
 class CountingMap
 

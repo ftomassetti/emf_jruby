@@ -3,6 +3,8 @@
 
 require 'emf/ast_serialization'
 
+module EMF
+
 def qname(e_object)
 	e_class = e_object.eClass
 	e_package = e_class.ePackage
@@ -65,4 +67,6 @@ def jsonize_obj(e_object, adapters={})
 		end
 		map
 	end
+end
+
 end

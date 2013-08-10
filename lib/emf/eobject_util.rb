@@ -1,3 +1,5 @@
+module EMF
+
 module EObjectUtil
 
 	def self.all_contents(root)
@@ -11,5 +13,7 @@ module EObjectUtil
 		raise "One expected, #{selected.count} found" unless selected.count == 1
 		selected.first
 	end
+
+end
 
 end

@@ -1,5 +1,7 @@
-$serialization_ids = {}
-$next_serialization_id = 1
+module EMF
+
+@serialization_ids = {}
+@next_serialization_id = 1
 
 def serialization_id(obj)
 	unless $serialization_ids[obj]		
@@ -7,4 +9,6 @@ def serialization_id(obj)
 		$next_serialization_id += 1
 	end
 	$serialization_ids[obj]
+end
+
 end

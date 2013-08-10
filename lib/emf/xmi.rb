@@ -1,8 +1,6 @@
-# java_import org.eclipse.emf.ecore.resource.URIConverter
 java_import org.eclipse.emf.ecore.resource.ResourceSet
 java_import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 java_import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
-# java_import import org.eclipse.emf.common.util.URI
 java_import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl
 java_import org.eclipse.emf.ecore.EObject
 java_import org.eclipse.emf.ecore.resource.Resource
