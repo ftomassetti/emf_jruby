@@ -2,6 +2,8 @@ java_import org.eclipse.emf.ecore.EcoreFactory
 java_import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 java_import org.eclipse.emf.ecore.EcorePackage
 
+# TODO: separate in RGen and EMF
+
 module EMF
 
 	# Track already converted classes
@@ -63,7 +65,7 @@ module EMF
 			emf_eclass.getEStructuralFeatures.add emf_a
 		end
 		ecore.getEReferences.each do |r|
-			puts "Ref #{r} #{r.name}"
+			#puts "Ref #{r} #{r.name}"
 			emf_r = create_ereference
 			emf_r.name = r.name
 			emf_r.containment = r.containment

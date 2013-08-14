@@ -3,7 +3,6 @@ Dir[curr_dir+"/jars/*.jar"].each do |jar|
 	require jar
 end
 
-require 'emf/ast_serialization'
 require 'emf/emf_to_json'
 require 'emf/eobject_util'
 require 'emf/model'

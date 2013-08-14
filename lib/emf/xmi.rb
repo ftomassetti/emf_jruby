@@ -5,6 +5,8 @@ java_import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl
 java_import org.eclipse.emf.ecore.EObject
 java_import org.eclipse.emf.ecore.resource.Resource
 
+# TODO: move to a method of EObject
+
 module EMF	
 
 	def self.to_xmi_str(data)

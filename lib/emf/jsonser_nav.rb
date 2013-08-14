@@ -1,14 +1,11 @@
-require 'json'
-
-module JSON
-	def self.load_file(path,max_nesting=100)
-		parse(File.read(path),{max_nesting: max_nesting})
-	end
-end
-
 # This module permits to manipulate EObjects serialized
 # as Hash
+
 module EMF
+
+module JsonSerialization
+
+module Query
 
 	def self.rel_conts(root)
 		root.keys.select {|k| k.start_with? 'relcont_'}
@@ -53,5 +50,9 @@ module EMF
 			puts s
 		end
 	end
+
+end
+
+end
 
 end
