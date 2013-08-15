@@ -2,10 +2,6 @@
 
 require 'rgen/metamodel_builder'
 
-java_import org.eclipse.emf.ecore.EcoreFactory
-java_import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
-java_import org.eclipse.emf.ecore.EcorePackage
-
 module EMF
 
 	# Track already converted classes
@@ -25,7 +21,7 @@ module EMF
 	end
 
 
-	def self.rgen_to_eobject(rgen_obj)
+	def self.rgen_to_eobject(rgen_obj,context=ConversionContext.new)
 	end
 
 	def self.rgen_to_edatatype(rgen_datatype)
@@ -61,7 +57,7 @@ module EMF
 
 	class RGen::MetamodelBuilder::MMBase
 
-		module EmfConversionMethods
+		module EmfConversionClassMethods
 
 			def to_eclass(context=ConversionContext.new)
 				EMF.rgen_to_eclass(self,context)
@@ -69,9 +65,19 @@ module EMF
 
 		end
 
-		class << self
-			include EmfConversionMethods
+		module EmfConversionInstanceMethods
+
+			def to_eobject(context=ConversionContext.new)
+				EMF.rgen_to_eobject(self,context)
+			end
+
 		end
+
+		class << self
+			include EmfConversionClassMethods
+		end
+
+		include EmfConversionInstanceMethods
 	end
 
 end

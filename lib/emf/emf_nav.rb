@@ -56,7 +56,7 @@ module Java::OrgEclipseEmfEcore::EObject
 
 end
 
-class Java::OrgEclipseEmfEcoreImpl::EObjectImpl
+class Java::OrgEclipseEmfEcoreImpl::BasicEObjectImpl
 
 	include Java::OrgEclipseEmfEcore::EObject::NavigationMethods
 	include Java::OrgEclipseEmfEcore::EObject::ModificationMethods

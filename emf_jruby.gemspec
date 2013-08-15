@@ -1,8 +1,8 @@
 Gem::Specification.new do |s|
   s.platform    = 'java'
   s.name        = 'emf_jruby'
-  s.version     = '0.1.7'
-  s.date        = '2013-08-03'
+  s.version     = '0.2.0'
+  s.date        = '2013-08-15'
   s.summary     = "EMF support for JRuby"
   s.description = "EMF support for JRuby. Support for loading and saving models in JSon."
   s.authors     = ["Federico Tomassetti"]

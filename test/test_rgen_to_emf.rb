@@ -19,6 +19,7 @@ class TestRgenToEmf < Test::Unit::TestCase
 	def test_gen_eclass_a_simple_attr_is_added
 		emf_eclass = EMF.rgen_to_eclass Person
 		assert_equal 1, emf_eclass.getEAttributes.size
+		assert_equal 0, emf_eclass.getEReferences.size
 		attr_name = emf_eclass.getEAttributes[0]
 		assert_equal 'name', attr_name.name
 		assert_equal EMF::EcoreLiterals.ESTRING,attr_name.getEType
