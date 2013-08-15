@@ -5,9 +5,46 @@ java_import org.eclipse.emf.ecore.EObject
 module Java::OrgEclipseEmfEcore::EObject
 
 	module NavigationMethods
-		
+
+		if not instance_methods.include? :contents
+
+		def contents
+			method = nil
+			method = :eContents if respond_to?(:eContents)
+			method = :old_contents if respond_to?(:old_contents)	
+			method = :getContents if respond_to?(:getContents)
+			raise "No method for getting contents, class: #{self.class}" unless method!=nil
+			send method
+		end
+
+	end
+
+		def contents_deep
+			l = []
+			contents.each do |c|
+				l << c
+				begin
+					grand_children = c.contents_deep
+				rescue Exception => e
+					raise "Problem getting children of #{c} (#{c.class}): #{e}"
+				end
+				grand_children.each do |sc|
+					l << sc
+				end
+			end   
+			l
+		end
+
 		def only_content_of_eclass(eclass)
-			selected = eAllContents.select {|o| o.eClass.isSuperTypeOf eclass}
+			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(contents,eclass)
+		end
+
+		def only_content_deep_of_eclass(eclass)
+			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(contents_deep,eclass)
+		end
+
+		def self.only_of_class(collection,eclass)
+			selected = collection.select {|o| o.eClass.isSuperTypeOf eclass}
 			case selected.count
 			when 0
 				raise EMF::LessThanExpectedFound.new
@@ -60,5 +97,11 @@ class Java::OrgEclipseEmfEcoreImpl::BasicEObjectImpl
 
 	include Java::OrgEclipseEmfEcore::EObject::NavigationMethods
 	include Java::OrgEclipseEmfEcore::EObject::ModificationMethods
+
+end
+
+class Java::OrgEclipseEmfEcoreResourceImpl::ResourceImpl
+
+	include Java::OrgEclipseEmfEcore::EObject::NavigationMethods
 
 end

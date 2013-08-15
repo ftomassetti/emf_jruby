@@ -19,21 +19,9 @@ class TestRgenNav < Test::Unit::TestCase
 	Project.eStructuralFeatures.add EMF.create_ereference(Person,'personnel',[:many,:containment])
 	Project.eStructuralFeatures.add EMF.create_ereference(Task,'related_tasks',[:many,:not_containment])
 
-	# class Task < RGen::MetamodelBuilder::MMBase
-	# 	has_attr 'desc', String
-	# end
-
-	# class Project < RGen::MetamodelBuilder::MMBase
-	# 	contains_many 'tasks', Task, 'project'
-	# 	contains_many 'personnel', Person, 'work'
-	# 	has_many 'related_tasks', Task
-	# end
-
-	#pack = EMF.create_epackage('my_pack','my_pack_uri')
-
-	#PersonEClass = Person.to_eclass
-	#TaskEClass = Task.to_eclass
-	#ProjectEClass = Project.to_eclass
+	RecThing = EMF.create_eclass Pack
+	RecThing.eStructuralFeatures.add EMF.create_eattribute_str('desc')
+	RecThing.eStructuralFeatures.add EMF.create_ereference(RecThing,'inside',[:many,:containment])
 
 	def project
 	 	EMF.create_eobject(Project)
@@ -43,6 +31,12 @@ class TestRgenNav < Test::Unit::TestCase
 	 	t = EMF.create_eobject(Task)
 	 	t.set_attr_value 'desc', desc
 	 	t
+	end
+
+	def recthing(str)
+		p = EMF.create_eobject(RecThing)
+		p.set_attr_value 'desc', str
+		p
 	end
 
 	def person(name)
@@ -119,6 +113,96 @@ class TestRgenNav < Test::Unit::TestCase
 		assert_raise EMF::MoreThanExpectedFound do 
 			pr.only_content_of_eclass(Task)
 		end
+	end
+
+	def test_resource_contents
+		res = Java::OrgEclipseEmfEcoreResourceImpl::ResourceImpl.new
+		a = recthing('a')
+		b = recthing('a>b')
+		c = recthing('a>c')
+		d = recthing('a>b>d')
+		e = recthing('a>b>e')
+		f = recthing('a>c>f')
+		g = recthing('a>c>f>g')
+		a.add_to_ref 'inside', b
+		a.add_to_ref 'inside', c
+		b.add_to_ref 'inside', d
+		b.add_to_ref 'inside', e
+		c.add_to_ref 'inside', f
+		f.add_to_ref 'inside', g
+
+		res.contents.add a
+
+		assert_equal [a], res.contents
+	end
+
+	def test_resource_contents_deep
+		res = Java::OrgEclipseEmfEcoreResourceImpl::ResourceImpl.new
+		a = recthing('a')
+		b = recthing('a>b')
+		c = recthing('a>c')
+		d = recthing('a>b>d')
+		e = recthing('a>b>e')
+		f = recthing('a>c>f')
+		g = recthing('a>c>f>g')
+		a.add_to_ref 'inside', b
+		a.add_to_ref 'inside', c
+		b.add_to_ref 'inside', d
+		b.add_to_ref 'inside', e
+		c.add_to_ref 'inside', f
+		f.add_to_ref 'inside', g
+
+		res.contents.add a
+
+		assert_equal [a,b,d,e,c,f,g], res.contents_deep
+	end
+
+	def test_eobjects_contents
+		a = recthing('a')
+		b = recthing('a>b')
+		c = recthing('a>c')
+		d = recthing('a>b>d')
+		e = recthing('a>b>e')
+		f = recthing('a>c>f')
+		g = recthing('a>c>f>g')
+		a.add_to_ref 'inside', b
+		a.add_to_ref 'inside', c
+		b.add_to_ref 'inside', d
+		b.add_to_ref 'inside', e
+		c.add_to_ref 'inside', f
+		f.add_to_ref 'inside', g
+
+		assert_equal [],d.contents
+		assert_equal [],e.contents
+		assert_equal [],g.contents
+		assert_equal [g],f.contents
+		assert_equal [d,e],b.contents
+		assert_equal [f],c.contents
+		assert_equal [b,c],a.contents
+	end
+
+	def test_eobjects_contents_deep
+		a = recthing('a')
+		b = recthing('a>b')
+		c = recthing('a>c')
+		d = recthing('a>b>d')
+		e = recthing('a>b>e')
+		f = recthing('a>c>f')
+		g = recthing('a>c>f>g')
+		a.add_to_ref 'inside', b
+		a.add_to_ref 'inside', c
+		b.add_to_ref 'inside', d
+		b.add_to_ref 'inside', e
+		c.add_to_ref 'inside', f
+		f.add_to_ref 'inside', g
+
+		assert_equal [],d.contents_deep
+		assert_equal [],e.contents_deep
+		assert_equal [],g.contents_deep
+		assert_equal [g],f.contents_deep
+		assert_equal [d,e],b.contents_deep
+		assert_equal [f,g],c.contents_deep
+		assert_equal [b,d,e,c,f,g],a.contents_deep
 	end
 
 end
