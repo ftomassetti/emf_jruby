@@ -44,9 +44,7 @@ module EMF
 		end
 		emf_eclass = create_eclass
 		ecore.getEAttributes.each do |a|			
-			emf_a = create_eattribute
-			emf_a.name = a.name
-			emf_a.setEType(rgen_to_edatatype(a.eType))
+			emf_a = create_eattribute(a.name,rgen_to_edatatype(a.eType))
 			emf_eclass.getEStructuralFeatures.add emf_a
 		end
 		ecore.getEReferences.each do |r|

@@ -36,6 +36,19 @@ module Java::OrgEclipseEmfEcore::EObject
 			(eClass.getEAllAttributes.select {|a| a.name==attr_name}).first
 		end
 
+		def get_ref(name)
+			(eClass.getEAllReferences.select {|r| r.name==name}).first
+		end
+
+		def get_ref_value(name)
+			eGet(get_ref(name))
+		end
+
+		def add_to_ref(ref_name,el)
+			l = eGet(get_ref(ref_name))
+			l.add el
+		end
+
 	end
 
 	include NavigationMethods
@@ -43,7 +56,7 @@ module Java::OrgEclipseEmfEcore::EObject
 
 end
 
-class Java::OrgEclipseEmfEcoreImpl::DynamicEObjectImpl
+class Java::OrgEclipseEmfEcoreImpl::EObjectImpl
 
 	include Java::OrgEclipseEmfEcore::EObject::NavigationMethods
 	include Java::OrgEclipseEmfEcore::EObject::ModificationMethods
