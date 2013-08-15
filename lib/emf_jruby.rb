@@ -3,9 +3,6 @@ Dir[curr_dir+"/jars/*.jar"].each do |jar|
 	require jar
 end
 
-require 'emf/emf_to_json'
-require 'emf/eobject_util'
-require 'emf/model'
-require 'emf/xmi'
-require 'emf/stats'
-require 'emf/rgen_to_emf'
+Dir[curr_dir+"/emf/*.rb"].each do |rb|
+	require rb
+end

@@ -1,6 +1,7 @@
+# Methods to managa XMI serialization of real XMI objects
+
 java_import org.eclipse.emf.ecore.resource.ResourceSet
 java_import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
-java_import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 java_import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl
 java_import org.eclipse.emf.ecore.EObject
 java_import org.eclipse.emf.ecore.resource.Resource

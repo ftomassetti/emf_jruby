@@ -7,25 +7,25 @@ module JsonSerialization
 
 module Query
 
-	def self.rel_conts(root)
+	def rel_conts(root)
 		root.keys.select {|k| k.start_with? 'relcont_'}
 	end
 
-	def self.rel_non_conts(root)
+	def rel_non_conts(root)
 		root.keys.select {|k| k.start_with? 'relcont_'}
 	end
 
-	def self.attrs(root)
+	def attrs(root)
 		root.keys.select {|k| k.start_with? 'attr_'}
 	end
 
-	def self.values(root,feat)
+	def values(root,feat)
 		raw = root[feat]
 		return raw if raw.is_a? Array
 		return [raw]
 	end
 
-	def self.traverse(root,depth=0,&op)
+	def traverse(root,depth=0,&op)
 		return traverse(root['root'],depth,&op) if root and (root.key? 'root')
 		op.call(root,depth)
 		return unless root		
@@ -41,7 +41,7 @@ module Query
 		end
 	end
 
-	def self.print_tree(root,depth=0)
+	def print_tree(root,depth=0)
 		traverse(root) do |n,d|
 			s = ""
 			d.times { s = s + "  " }

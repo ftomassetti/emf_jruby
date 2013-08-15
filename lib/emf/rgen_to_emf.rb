@@ -1,8 +1,10 @@
+# Conversion of RGen object to real EMF objects
+
+require 'rgen/metamodel_builder'
+
 java_import org.eclipse.emf.ecore.EcoreFactory
 java_import org.eclipse.emf.ecore.impl.DynamicEObjectImpl
 java_import org.eclipse.emf.ecore.EcorePackage
-
-# TODO: separate in RGen and EMF
 
 module EMF
 
@@ -22,23 +24,6 @@ module EMF
 		end
 	end
 
-	EcoreLiterals = JavaUtilities.get_proxy_class('org.eclipse.emf.ecore.EcorePackage$Literals')
-
-	def self.create_eclass
-		EcoreFactory.eINSTANCE.createEClass
-	end
-
-	def self.create_eattribute
-		EcoreFactory.eINSTANCE.createEAttribute
-	end
-
-	def self.create_ereference
-		EcoreFactory.eINSTANCE.createEReference
-	end
-
-	def self.create_eobject(eclass)
-		DynamicEObjectImpl.new eclass
-	end
 
 	def self.rgen_to_eobject(rgen_obj)
 	end
@@ -74,6 +59,21 @@ module EMF
 			emf_eclass.getEStructuralFeatures.add emf_r
 		end
 		emf_eclass
+	end
+
+	class RGen::MetamodelBuilder::MMBase
+
+		module EmfConversionMethods
+
+			def to_eclass(context=ConversionContext.new)
+				EMF.rgen_to_eclass(self,context)
+			end
+
+		end
+
+		class << self
+			include EmfConversionMethods
+		end
 	end
 
 end

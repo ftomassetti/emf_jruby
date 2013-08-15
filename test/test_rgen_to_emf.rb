@@ -1,6 +1,5 @@
 require 'emf_jruby'
 require 'test/unit'
-require 'emf/rgen_to_emf'
 require 'rgen/metamodel_builder'
 
 class Person < RGen::MetamodelBuilder::MMBase
@@ -34,7 +33,7 @@ class TestRgenToEmf < Test::Unit::TestCase
 	end
 
 	def test_gen_eclass_a_simple_non_containement_is_added
-		emf_eclass = EMF.rgen_to_eclass Project
+		emf_eclass = EMF.rgen_to_eclass(Project)
 		assert_equal 2, emf_eclass.getEReferences.size
 		ref_pers = get_ref_by_name(emf_eclass,'personnel')
 		assert_equal false, ref_pers.containment
