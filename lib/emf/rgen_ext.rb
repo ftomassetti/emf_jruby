@@ -61,8 +61,6 @@ class RGen::MetamodelBuilder::MMBase
 				self_value = self.get(ref)
 				other_value = other.get(ref)
 				to_ignore = ref.getEOpposite and ref.getEOpposite.containment
-				#puts "ignore #{self.class.name}.#{ref.name}" if to_ignore
-				#puts "returning false on #{attrib.name}" unless self_value.eql?(other_value)
 				unless to_ignore
 					if ref.containment
 						return false unless self_value == other_value
