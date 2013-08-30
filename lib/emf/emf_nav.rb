@@ -1,30 +1,30 @@
 # Utils methods to naviate real EMF objects
 
 java_import org.eclipse.emf.ecore.EObject
+java_import org.eclipse.emf.ecore.util.EContentsEList
+java_import org.eclipse.emf.common.util.BasicEList
 
 module Java::OrgEclipseEmfEcore::EObject
 
 	module NavigationMethods
 
-		if not instance_methods.include? :contents
-
-		def contents
+		def children
 			method = nil
 			method = :eContents if respond_to?(:eContents)
 			method = :old_contents if respond_to?(:old_contents)	
 			method = :getContents if respond_to?(:getContents)
 			raise "No method for getting contents, class: #{self.class}" unless method!=nil
-			send method
+			res = (send method)
+			obj = self
+			res
 		end
 
-	end
-
-		def contents_deep
+		def children_deep
 			l = []
-			contents.each do |c|
+			children.each do |c|
 				l << c
 				begin
-					grand_children = c.contents_deep
+					grand_children = c.children_deep
 				rescue Exception => e
 					raise "Problem getting children of #{c} (#{c.class}): #{e}"
 				end
@@ -35,12 +35,12 @@ module Java::OrgEclipseEmfEcore::EObject
 			l
 		end
 
-		def only_content_of_eclass(eclass)
-			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(contents,eclass)
+		def only_child_of_eclass(eclass)
+			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(children,eclass)
 		end
 
-		def only_content_deep_of_eclass(eclass)
-			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(contents_deep,eclass)
+		def only_child_deep_of_eclass(eclass)
+			Java::OrgEclipseEmfEcore::EObject::NavigationMethods.only_of_class(children_deep,eclass)
 		end
 
 		def self.only_of_class(collection,eclass)

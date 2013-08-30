@@ -72,15 +72,15 @@ class TestRgenNav < Test::Unit::TestCase
 		assert_equal 'my desc',t.get_attr_value('desc')
 	end
 
-	def test_only_content_of_eclass_zero_found
+	def test_only_child_of_eclass_zero_found
 		p = project
 		t = task "related task"
 		p.add_to_ref 'related_tasks', t # it is a referenced but not contained task
 		assert_raise EMF::LessThanExpectedFound do
-			p.only_content_of_eclass(Person)
+			p.only_child_of_eclass(Person)
 		end
 		assert_raise EMF::LessThanExpectedFound do
-			p.only_content_of_eclass(Task)
+			p.only_child_of_eclass(Task)
 		end
 	end
 
@@ -91,7 +91,7 @@ class TestRgenNav < Test::Unit::TestCase
 		assert_equal Task, t.etype
 	end
 
-	def test_only_content_of_eclass_one_found
+	def test_only_child_of_eclass_one_found
 		pr = project
 		t1 = task "task 1"
 		t2 = task "task 2"
@@ -99,10 +99,10 @@ class TestRgenNav < Test::Unit::TestCase
 		pr.add_to_ref 'tasks', t1
 		pr.add_to_ref 'tasks', t2
 		pr.add_to_ref 'personnel', p1
-		assert p1.equal? pr.only_content_of_eclass(Person)
+		assert p1.equal? pr.only_child_of_eclass(Person)
 	end
 
-	def test_only_content_of_eclass_many_found
+	def test_only_child_of_eclass_many_found
 		pr = project
 		t1 = task "task 1"
 		t2 = task "task 2"
@@ -111,11 +111,11 @@ class TestRgenNav < Test::Unit::TestCase
 		pr.add_to_ref 'tasks', t2
 		pr.add_to_ref 'personnel', p1
 		assert_raise EMF::MoreThanExpectedFound do 
-			pr.only_content_of_eclass(Task)
+			pr.only_child_of_eclass(Task)
 		end
 	end
 
-	def test_resource_contents
+	def test_resource_children
 		res = Java::OrgEclipseEmfEcoreResourceImpl::ResourceImpl.new
 		a = recthing('a')
 		b = recthing('a>b')
@@ -131,12 +131,12 @@ class TestRgenNav < Test::Unit::TestCase
 		c.add_to_ref 'inside', f
 		f.add_to_ref 'inside', g
 
-		res.contents.add a
+		res.children.add a
 
-		assert_equal [a], res.contents
+		assert_equal [a], res.children.entries
 	end
 
-	def test_resource_contents_deep
+	def test_resource_children_deep
 		res = Java::OrgEclipseEmfEcoreResourceImpl::ResourceImpl.new
 		a = recthing('a')
 		b = recthing('a>b')
@@ -152,12 +152,12 @@ class TestRgenNav < Test::Unit::TestCase
 		c.add_to_ref 'inside', f
 		f.add_to_ref 'inside', g
 
-		res.contents.add a
+		res.children.add a
 
-		assert_equal [a,b,d,e,c,f,g], res.contents_deep
+		assert_equal [a,b,d,e,c,f,g], res.children_deep.entries
 	end
 
-	def test_eobjects_contents
+	def test_eobjects_children
 		a = recthing('a')
 		b = recthing('a>b')
 		c = recthing('a>c')
@@ -172,16 +172,16 @@ class TestRgenNav < Test::Unit::TestCase
 		c.add_to_ref 'inside', f
 		f.add_to_ref 'inside', g
 
-		assert_equal [],d.contents
-		assert_equal [],e.contents
-		assert_equal [],g.contents
-		assert_equal [g],f.contents
-		assert_equal [d,e],b.contents
-		assert_equal [f],c.contents
-		assert_equal [b,c],a.contents
+		assert_equal [],d.children.entries
+		assert_equal [],e.children.entries
+		assert_equal [],g.children.entries
+		assert_equal [g],f.children.entries
+		assert_equal [d,e],b.children.entries
+		assert_equal [f],c.children.entries
+		assert_equal [b,c],a.children.entries
 	end
 
-	def test_eobjects_contents_deep
+	def test_eobjects_children_deep
 		a = recthing('a')
 		b = recthing('a>b')
 		c = recthing('a>c')
@@ -196,13 +196,13 @@ class TestRgenNav < Test::Unit::TestCase
 		c.add_to_ref 'inside', f
 		f.add_to_ref 'inside', g
 
-		assert_equal [],d.contents_deep
-		assert_equal [],e.contents_deep
-		assert_equal [],g.contents_deep
-		assert_equal [g],f.contents_deep
-		assert_equal [d,e],b.contents_deep
-		assert_equal [f,g],c.contents_deep
-		assert_equal [b,d,e,c,f,g],a.contents_deep
+		assert_equal [],d.children_deep.entries
+		assert_equal [],e.children_deep.entries
+		assert_equal [],g.children_deep.entries
+		assert_equal [g],f.children_deep.entries
+		assert_equal [d,e],b.children_deep.entries
+		assert_equal [f,g],c.children_deep.entries
+		assert_equal [b,d,e,c,f,g],a.children_deep.entries
 	end
 
 end
