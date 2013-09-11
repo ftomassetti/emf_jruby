@@ -28,6 +28,10 @@ module EMF
 		create_eattribute(name,EcoreLiterals::ESTRING)
 	end
 
+	def self.create_eattribute_int(name)
+		create_eattribute(name,EcoreLiterals::EINT)
+	end
+
 	def self.create_ereference(type=nil, name=nil, params=[])
 		r = EcoreFactory.eINSTANCE.createEReference #(type, type.ePackage.next_id)
 		r.set_etype(type) 
