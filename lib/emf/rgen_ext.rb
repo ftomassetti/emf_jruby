@@ -96,7 +96,12 @@ class RGen::MetamodelBuilder::MMBase
 			arr = []
 			ecore = self.class.ecore
 			ecore.eAllReferences.select {|r| r.containment}.each do |ref|
-				arr.concat(self.send(ref.name.to_sym))
+				res = self.send(ref.name.to_sym)
+				if res.is_a? Array
+					arr.concat(res)
+				elsif res
+					arr << res
+				end
 			end
 			arr
 		end
