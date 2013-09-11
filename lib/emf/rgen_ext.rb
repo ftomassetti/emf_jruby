@@ -92,6 +92,36 @@ class RGen::MetamodelBuilder::MMBase
 			send getter
 		end
 
+		def children
+			arr = []
+			ecore = self.class.ecore
+			ecore.eAllReferences.select {|r| r.containment}.each do |ref|
+				arr.concat(self.send(ref.name.to_sym))
+			end
+			arr
+		end
+
+		def children_deep
+			arr = []
+			children.each do |c|
+				arr << c
+				arr.concat(c.children_deep)
+			end			
+			arr
+		end
+
+		def only_child_of_type(type)
+			selected = children.select {|c| c.is_a?(type)}
+			raise "Exactly one expected" unless selected.count==1
+			selected
+		end
+
+		def only_child_deep_of_type(type)
+			selected = children_deep.select {|c| c.is_a?(type)}
+			raise "Exactly one expected" unless selected.count==1
+			selected
+		end
+
 	end
 
 	class << self
