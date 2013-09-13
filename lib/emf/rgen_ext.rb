@@ -44,8 +44,9 @@ class RGen::MetamodelBuilder::MMBase
 			return false if other==nil
 			return false unless self.class==other.class
 			self.class.ecore.eAllAttributes.each do |attrib|
+				raise "Attrib <nil> for class #{self.class.ecore.name}" unless attrib
 				if attrib.name != 'dynamic' # I have to understand this...
-					self_value = self.get(attrib)
+					self_value  = self.get(attrib)
 					other_value = other.get(attrib)
 					#puts "returning false on #{attrib.name}" unless self_value.eql?(other_value)
 					return false unless self_value == other_value
