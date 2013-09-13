@@ -65,6 +65,12 @@ module Java::OrgEclipseEmfEcore::EObject
 			eSet(a,value)
 		end
 
+		def set_ref_value(ref_name,value)
+			r = get_ref(ref_name)
+			raise 'Ref not found' unless r
+			eSet(r,value)
+		end
+
 		def get_attr_value(attr_name)
 			eGet(get_attr(attr_name))
 		end
