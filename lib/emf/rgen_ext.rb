@@ -117,13 +117,13 @@ class RGen::MetamodelBuilder::MMBase
 		end
 
 		def only_child_of_type(type)
-			selected = children.select {|c| c.is_a?(type)}
+			selected = children.select {|c| c and c.is_a?(type)}
 			raise "Exactly one child of type #{type} expected, #{selected.count} found on #{self}" unless selected.count==1
 			selected
 		end
 
 		def only_child_deep_of_type(type)
-			selected = children_deep.select {|c| c.is_a?(type)}
+			selected = children_deep.select {|c| c and c.is_a?(type)}
 			raise "Exactly one child of type #{type} expected, #{selected.count} found on #{self}" unless selected.count==1
 			selected
 		end
