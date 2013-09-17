@@ -19,9 +19,9 @@ class TestMisc < Test::Unit::TestCase
 
 	def test_rel_conts_on_simple_node
 		federico = EMF.create_eobject(Person)
-		lm = LightModels::Serialization.eobject_to_model(federico)['root']
-		assert_equal 1,LightModels::Query.rel_conts(lm).count
-		assert_equal 'relcont_home_address',LightModels::Query.rel_conts(lm)[0]
+		lm = EMF::Serialization.eobject_to_model(federico)['root']
+		assert_equal 1,LightModels::QuerySerialized.rel_conts(lm).count
+		assert_equal 'relcont_home_address',LightModels::QuerySerialized.rel_conts(lm)[0]
 	end	
 
 	EcoreLiterals = JavaUtilities.get_proxy_class('org.eclipse.emf.ecore.EcorePackage$Literals')
@@ -39,18 +39,18 @@ class TestMisc < Test::Unit::TestCase
 
 	def test_collect_values_empty
 		p = EMF.create_eobject(Person)
-		m = LightModels::Serialization.eobject_to_model(p)
+		m = EMF::Serialization.eobject_to_model(p)
 
-		assert_equal 0,LightModels::Query.collect_values(m['root']).count
+		assert_equal 0,LightModels::QuerySerialized.collect_values(m['root']).count
 	end
 
 	def test_collect_values_single_value
 		p = EMF.create_eobject(Person)
 		p.set_attr_value('name','Federico')
-		m = LightModels::Serialization.eobject_to_model(p)
+		m = EMF::Serialization.eobject_to_model(p)
 
-		assert_equal 1,LightModels::Query.collect_values(m['root']).count
-		assert LightModels::Query.collect_values(m['root']).include? 'Federico'
+		assert_equal 1,LightModels::QuerySerialized.collect_values(m['root']).count
+		assert LightModels::QuerySerialized.collect_values(m['root']).include? 'Federico'
 	end
 
 	def test_collect_values_in_children
@@ -61,7 +61,7 @@ class TestMisc < Test::Unit::TestCase
 		federico.set_attr_value 'name','Federico'
 		federico.set_ref_value 'home_address', home
 
-		map = LightModels::Query.collect_values_with_count(LightModels::Serialization.eobject_to_model(federico)['root'])
+		map = LightModels::QuerySerialized.collect_values_with_count(EMF::Serialization.eobject_to_model(federico)['root'])
 		assert_equal 3,map.count
 		assert_equal 1,map['via Tripoli']
 		assert_equal 1,map['Federico']
@@ -76,7 +76,7 @@ class TestMisc < Test::Unit::TestCase
 		federico.set_attr_value 'name','Federico'
 		federico.set_ref_value 'home_address', home
 
-		map = LightModels::Query.collect_values_with_count(LightModels::Serialization.eobject_to_model(federico)['root'])
+		map = LightModels::QuerySerialized.collect_values_with_count(EMF::Serialization.eobject_to_model(federico)['root'])
 		assert_equal 2,map.count
 		assert_equal 2,map['Federico']
 		assert_equal 1,map[27]
@@ -85,7 +85,7 @@ class TestMisc < Test::Unit::TestCase
 	def test_collect_values_in_children_with_count_on_complex_object
 		set_completed = JSON.parse(IO.read(File.dirname(__FILE__)+'/data/node_setCompleted.json'))
 
-		map = LightModels::Query.collect_values_with_count(set_completed)
+		map = LightModels::QuerySerialized.collect_values_with_count(set_completed)
 		assert_equal 4,map.count
 		assert_equal 1,map['completed']
 		assert_equal 1,map[true]
@@ -104,7 +104,7 @@ class TestSerializationEmf < Test::Unit::TestCase
 
 	def test_to_model_with_single_obj
 		p = EMF.create_eobject(Person)
-		m = LightModels::Serialization.eobject_to_model(p)
+		m = EMF::Serialization.eobject_to_model(p)
 
 		assert_equal 1,m['root']['id']
 		assert_equal 0,m['external_elements'].count
